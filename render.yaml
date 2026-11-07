@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: catalogo-api
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python -m app.seed
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PHONE
+        value: "5583994159831"
+      - key: ADMIN_USERNAME
+        value: "admin"
+      - key: ADMIN_PASSWORD
+        value: "admin123"
+      - key: STORE_NAME
+        value: "Catálogo Express Cosméticos"
+      - key: DATABASE_URL
+        value: "sqlite:///./catalogo.db"
+

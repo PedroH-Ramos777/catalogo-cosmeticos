@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: catalogo_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=sua-chave-secreta-em-producao-mude-aqui
+      - ADMIN_PHONE=5583994159831
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - STORE_NAME=Catálogo Express Cosméticos
+      - DATABASE_URL=sqlite:///./catalogo.db
+    volumes:
+      - ./backend/catalogo.db:/app/catalogo.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: catalogo_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - backend
+    restart: unless-stopped
+
