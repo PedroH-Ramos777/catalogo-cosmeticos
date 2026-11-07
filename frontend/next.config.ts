@@ -3,15 +3,17 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   async rewrites() {
-    const backendUrl = process.env.BACKEND_INTERNAL_URL || "http://127.0.0.1:8000";
+    if (!process.env.BACKEND_INTERNAL_URL) {
+      return [];
+    }
     return [
       {
         source: "/api/v1/:path*",
-        destination: `${backendUrl}/api/v1/:path*`,
+        destination: `${process.env.BACKEND_INTERNAL_URL}/api/v1/:path*`,
       },
       {
         source: "/static/:path*",
-        destination: `${backendUrl}/static/:path*`,
+        destination: `${process.env.BACKEND_INTERNAL_URL}/static/:path*`,
       },
     ];
   },
